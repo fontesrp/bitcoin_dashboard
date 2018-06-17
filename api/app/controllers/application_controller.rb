@@ -14,14 +14,10 @@ class ApplicationController < ActionController::API
 
       payload = JWT.decode(
         token,
-        Rails.application.secrets.secret_key_base
+        Rails.application.credentials.secret_key_base
       )&.first
 
-      if Time.at(payload['exp']) >= Time.now
-        @user ||= User.find_by_id payload['id']
-      else
-        nil
-      end
+      User.find_by_id payload['id']
 
     rescue JWT::DecodeError => error
       nil

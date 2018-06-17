@@ -22,7 +22,7 @@ class TokensController < ApplicationController
 
   def encode_token(payload = {}, exp = 24.hours.from_now)
 
-    payload.reverse_merge! exp: exp
+    payload.reverse_merge! exp: exp.to_i
 
     JWT.encode(
       payload,
