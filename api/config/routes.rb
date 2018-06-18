@@ -2,5 +2,8 @@ Rails.application.routes.draw do
 
   resources :tokens, only: :create
   resources :currencies, only: :index
-  resources :users, except: :destroy
+
+  resources :users, except: :destroy, shallow: true do
+    resources :user_currencies, except: [:show, :update]
+  end
 end
