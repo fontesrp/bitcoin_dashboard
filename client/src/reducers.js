@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
 
-const dummy = (state = {}, action) => state;
+import appReducer from "./app/duck";
+
 
 const rootReducer = combineReducers({
-  dummy
+  app: appReducer
 });
 
 export default rootReducer;
