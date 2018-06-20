@@ -1,14 +1,8 @@
 import React, { Component } from "react";
-import $ from "jquery";
 
-import ModalButtonComponent from "./ModalButtonComponent";
-import ModalFormComponent from "./ModalFormComponent";
+import ModalComponent from "../common/modal/ModalComponent";
 
-class ModalComponent extends Component {
-
-  componentWillUnmount() {
-    $("#sessionModal").modal("hide");
-  }
+class SessionModalComponent extends Component {
 
   getFormData() {
 
@@ -22,9 +16,7 @@ class ModalComponent extends Component {
     return new FormData(form);
   }
 
-  onSignIn() {
-
-    const data = this.getFormData();
+  onSignIn(data) {
 
     if (data === undefined) {
       return;
@@ -39,13 +31,11 @@ class ModalComponent extends Component {
     });
   }
 
-  onSignUp() {
+  onSignUp(data) {
     return function () {};
   }
 
-  onSearch(searchEmail) {
-
-    const data = this.getFormData();
+  onSearch(data) {
 
     if (data === undefined) {
       return;
@@ -70,6 +60,7 @@ class ModalComponent extends Component {
 
     let title;
     let buttons;
+    let onSubmit;
     let fields = [
       {
         label: "Email",
@@ -87,10 +78,12 @@ class ModalComponent extends Component {
       buttons = [
         {
           label: "Continue",
-          onClick: this.onSearch.bind(this),
+          submit: true,
           primary: true
         }
       ];
+
+      onSubmit = this.onSearch.bind(this);
     } else if (emailFound) {
 
       title = "Sign in";
@@ -101,10 +94,12 @@ class ModalComponent extends Component {
           onClick: resetSearch
         }, {
           label: "Sign in",
-          onClick: this.onSignIn.bind(this),
+          submit: true,
           primary: true
         }
       ];
+
+      onSubmit = this.onSignIn.bind(this);
 
       fields[0].readonly = true;
       fields[0].value = userEmail;
@@ -124,10 +119,12 @@ class ModalComponent extends Component {
           onClick: resetSearch
         }, {
           label: "Sign up",
-          onClick: this.onSignUp.bind(this),
+          submit: true,
           primary: true
         }
       ];
+
+      onSubmit = this.onSignUp.bind(this);
 
       fields[0].readonly = true;
       fields[0].value = userEmail;
@@ -159,33 +156,16 @@ class ModalComponent extends Component {
     }
 
     return (
-      <div className="modal" id="sessionModal" tabIndex="-1" role="dialog">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">{ title }</h5>
-              <button type="button" className="close" data-dismiss="modal">
-                <span>&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <ModalFormComponent
-                fields={ fields }
-                error={ error }
-              />
-            </div>
-            <div className="modal-footer">
-              { buttons
-                .map((btn, idx) => (
-                  <ModalButtonComponent key={ idx } { ...btn } />
-                ))
-              }
-            </div>
-          </div>
-        </div>
-      </div>
+      <ModalComponent
+        id="sessionModal"
+        title={ title }
+        fields={ fields }
+        error={ error }
+        buttons={ buttons }
+        onSubmit={ onSubmit }
+      />
     );
   }
 }
 
-export default ModalComponent;
+export default SessionModalComponent;

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import jwtDecode from "jwt-decode";
 
-import ModalComponent from "./ModalComponent";
+import SessionModalComponent from "./SessionModalComponent";
 
 class SessionComponent extends Component {
 
@@ -43,7 +43,7 @@ class SessionComponent extends Component {
           <a className="nav-link" href="#" data-toggle="modal" data-target="#sessionModal">
             Sign in/up
           </a>
-          <ModalComponent { ...props } />
+          <SessionModalComponent { ...props } />
         </li>
       );
     }
