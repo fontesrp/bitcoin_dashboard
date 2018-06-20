@@ -19,7 +19,7 @@ const ModalButtonComponent = function (props) {
   return (
     <button
       type="button"
-      class={ className }
+      className={ className }
       onClick={ onClick }
     >
       { label }

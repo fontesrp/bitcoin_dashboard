@@ -1,3 +1,7 @@
 .navbar {
   background-color: #E5871C;
 }
+
+.dropdown-item:active {
+  background-color: #E5871C;
+}

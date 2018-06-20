@@ -1,146 +1,191 @@
-import React from "react";
+import React, { Component } from "react";
+import $ from "jquery";
 
 import ModalButtonComponent from "./ModalButtonComponent";
-import TextInputComponent from "../common/textInput/TextInputComponent";
+import ModalFormComponent from "./ModalFormComponent";
 
-const onSignIn = function (signIn) {
-  return function () {};
-};
+class ModalComponent extends Component {
 
-const onSignUp = function (signUp) {
-  return function () {};
-};
+  componentWillUnmount() {
+    $("#sessionModal").modal("hide");
+  }
 
-const ModalComponent = function (props) {
+  getFormData() {
 
-  const {
-    emailSearched,
-    userFullName,
-    searchEmail,
-    signIn,
-    signUp,
-    resetSearch
-  } = props;
+    const form = document.getElementById("modal-form");
 
-  const emailFound = (!!userFullName);
-
-  let title;
-  let buttons;
-  let fields = [
-    {
-      label: "Email",
-      name: "email",
-      placeholder: "js@winterfell.gov",
-      required: true
+    if (!form.reportValidity()) {
+      form.dispatchEvent(new Event("submit"));
+      return;
     }
-  ];
 
-  if (!emailSearched) {
+    return new FormData(form);
+  }
 
-    title = "Welcome to Bitcoin Dashboard";
+  onSignIn() {
 
-    buttons = [
-      {
-        label: "Continue",
-        onClick: searchEmail,
-        primary: true
-      }
-    ];
-  } else if (emailFound) {
+    const data = this.getFormData();
 
-    title = "Sign in";
+    if (data === undefined) {
+      return;
+    }
 
-    buttons = [
-      {
-        label: "Back",
-        onClick: resetSearch
-      }, {
-        label: "Sign in",
-        onClick: onSignIn(signIn),
-        primary: true
-      }
-    ];
+    const email = data.get("email");
+    const password = data.get("password");
 
-    fields[0].enabled = false;
-    fields.push({
-      label: "Password",
-      name: "password",
-      type: "password",
-      required: true
+    this.props.signIn({
+      email,
+      password
     });
-  } else {
+  }
 
-    title = "Sign up";
+  onSignUp() {
+    return function () {};
+  }
 
-    buttons = [
+  onSearch(searchEmail) {
+
+    const data = this.getFormData();
+
+    if (data === undefined) {
+      return;
+    }
+
+    const email = data.get("email");
+
+    this.props.searchEmail(email);
+  }
+
+  render() {
+
+    const {
+      emailSearched,
+      userFullName,
+      userEmail,
+      resetSearch,
+      error
+    } = this.props;
+
+    const emailFound = (!!userFullName);
+
+    let title;
+    let buttons;
+    let fields = [
       {
-        label: "Back",
-        onClick: resetSearch
-      }, {
-        label: "Sign up",
-        onClick: onSignUp(signUp),
-        primary: true
+        label: "Email",
+        name: "email",
+        type: "email",
+        placeholder: "js@winterfell.gov",
+        required: true
       }
     ];
 
-    fields[0].enabled = false;
-    fields = fields.concat([
-      {
-        label: "First name",
-        name: "first_name",
-        placeholder: "Jon",
-        required: true,
-        halfWidth: true
-      }, {
-        label: "Last name",
-        name: "last_name",
-        placeholder: "Snow",
-        required: true,
-        halfWidth: true
-      }, {
+    if (!emailSearched) {
+
+      title = "Welcome to Bitcoin Dashboard";
+
+      buttons = [
+        {
+          label: "Continue",
+          onClick: this.onSearch.bind(this),
+          primary: true
+        }
+      ];
+    } else if (emailFound) {
+
+      title = "Sign in";
+
+      buttons = [
+        {
+          label: "Back",
+          onClick: resetSearch
+        }, {
+          label: "Sign in",
+          onClick: this.onSignIn.bind(this),
+          primary: true
+        }
+      ];
+
+      fields[0].readonly = true;
+      fields[0].value = userEmail;
+      fields.push({
         label: "Password",
         name: "password",
         type: "password",
         required: true
-      }, {
-        label: "Confirm password",
-        name: "password_confirmation",
-        type: "password",
-        required: true
-      }
-    ]);
-  }
+      });
+    } else {
 
-  return (
-    <div class="modal" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">{ title }</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              <span>&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="modal-form">
-              { fields
-                .map(fld => (
-                  <TextInputComponent key={ fld.name } { ...fld } />
+      title = "Sign up";
+
+      buttons = [
+        {
+          label: "Back",
+          onClick: resetSearch
+        }, {
+          label: "Sign up",
+          onClick: this.onSignUp.bind(this),
+          primary: true
+        }
+      ];
+
+      fields[0].readonly = true;
+      fields[0].value = userEmail;
+      fields = fields.concat([
+        {
+          label: "First name",
+          name: "first_name",
+          placeholder: "Jon",
+          required: true,
+          halfWidth: true
+        }, {
+          label: "Last name",
+          name: "last_name",
+          placeholder: "Snow",
+          required: true,
+          halfWidth: true
+        }, {
+          label: "Password",
+          name: "password",
+          type: "password",
+          required: true
+        }, {
+          label: "Confirm password",
+          name: "password_confirmation",
+          type: "password",
+          required: true
+        }
+      ]);
+    }
+
+    return (
+      <div className="modal" id="sessionModal" tabIndex="-1" role="dialog">
+        <div className="modal-dialog" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">{ title }</h5>
+              <button type="button" className="close" data-dismiss="modal">
+                <span>&times;</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <ModalFormComponent
+                fields={ fields }
+                error={ error }
+              />
+            </div>
+            <div className="modal-footer">
+              { buttons
+                .map((btn, idx) => (
+                  <ModalButtonComponent key={ idx } { ...btn } />
                 ))
               }
-            </form>
-          </div>
-          <div class="modal-footer">
-            { buttons
-              .map((btn, idx) => (
-                <ModalButtonComponent key={ idx } { ...btn } />
-              ))
-            }
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ModalComponent;

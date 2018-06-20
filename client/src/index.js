@@ -5,7 +5,7 @@ import logger from "redux-logger";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 
-import AppContainer from "./app/AppContainer";
+import App from "./app/App";
 import rootReducer from "./reducers";
 import registerServiceWorker from "./registerServiceWorker";
 
@@ -14,7 +14,7 @@ const store = createStore(rootReducer, middleware);
 
 const app = (
     <Provider store={ store }>
-        <AppContainer />
+        <App />
     </Provider>
 );
 
