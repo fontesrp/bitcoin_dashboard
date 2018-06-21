@@ -1,0 +1,1 @@
+UpdateRatesJob.perform_later
