@@ -38,18 +38,8 @@ class UpdateRatesJob < ApplicationJob
 
   def broadcast_updates
 
-    ExchangeRate.all.each do |exc|
-
-      props = exc.attributes.extract! 'id', 'buying_currency_id', 'selling_currency_id', 'rate'
-
-      props.merge!({
-        buying_currency_symbol: exc.buying_currency.symbol,
-        selling_currency_symbol: exc.selling_currency.symbol
-      })
-
-      exc.watching_users.each { |usr|
-        ActionCable.server.broadcast "rates_user_#{usr.id}", props
-      }
+    ExchangeRate.user_rates.each do |user_id, rates|
+      ActionCable.server.broadcast "rates_user_#{user_id}", rates
     end
   end
 
