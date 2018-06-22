@@ -5,6 +5,9 @@ class RatesChannel < ApplicationCable::Channel
 
   def receive(params)
 
+    puts "RatesChannel receive"
+    puts JSON.dump(params)
+
     if params['message'] == 'get_user_rates'
 
       ActionCable.server.broadcast(

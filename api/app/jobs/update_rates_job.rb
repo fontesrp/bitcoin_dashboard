@@ -39,7 +39,7 @@ class UpdateRatesJob < ApplicationJob
   def broadcast_updates
 
     ExchangeRate.user_rates.each do |user_id, rates|
-      ActionCable.server.broadcast "rates_user_#{user_id}", rates
+      ActionCable.server.broadcast "rates_user_#{user_id}", rates: rates, updated_at: DateTime.now.iso8601 + 'Z'
     end
   end
 

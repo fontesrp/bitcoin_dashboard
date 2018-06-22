@@ -4,6 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
 import NavbarComponent from "./navbar/NavbarComponent";
+import RatesContainer from "./rates/RatesContainer";
 
 class AppComponent extends Component {
 
@@ -12,7 +13,7 @@ class AppComponent extends Component {
     return (
       <div className="App">
         <NavbarComponent />
-        App
+        <RatesContainer />
       </div>
     );
   }

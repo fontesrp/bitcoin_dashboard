@@ -1,5 +1,11 @@
+import ActionCable from "action-cable-react-jwt";
+
 const PROTOCOL = "http";
 const DOMAIN = "localhost:3000";
+const CABLE_PROTOCOL = "ws";
+const CABLE_PATH = "cable";
+const CABLE_RATES_CHANNEL = "RatesChannel";
+const FAKE_JWT = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
 
 class Api {
 
@@ -75,6 +81,24 @@ class Api {
     this.normalizeError(json);
 
     return json;
+  }
+
+  static createCable(jwt) {
+
+    const apiJwt = (!!jwt) ? jwt : FAKE_JWT;
+
+    return ActionCable.createConsumer(`${CABLE_PROTOCOL}://${DOMAIN}/${CABLE_PATH}`, apiJwt);
+  }
+
+  static subscribe(cable, callbacks) {
+
+    const rates = cable.subscriptions.create(CABLE_RATES_CHANNEL, {
+      received: callbacks.onRatesReceived
+    });
+
+    return {
+      rates
+    };
   }
 }
 

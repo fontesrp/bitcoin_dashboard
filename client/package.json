@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "action-cable-react-jwt": "^0.0.5",
+    "actioncable": "^5.2.0",
     "bootstrap": "^4.1.1",
     "jquery": "^3.3.1",
     "jwt-decode": "^2.2.0",

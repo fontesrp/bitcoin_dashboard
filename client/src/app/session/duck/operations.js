@@ -62,7 +62,8 @@ const getUserData = function (jwt, userId) {
     const {
       sendRequest,
       recieveUserData,
-      recieveResponse
+      recieveResponse,
+      signInAsGuest
     } = Creators;
 
     dispatch(sendRequest());

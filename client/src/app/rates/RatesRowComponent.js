@@ -10,15 +10,17 @@ const RatesRowComponent = function (props) {
   } = props;
 
   return (
-    <div>
-      <p>
-        <span className="text-uppercase font-weight-bold">
+    <div className="RatesRow">
+      <div className="rate-symbol-container">
+        <p className="text-uppercase font-weight-bold">
           { symbol }
-        </span>
-        <span className="rate-currency">
+        </p>
+      </div>
+      <div className="rate-currency-container">
+        <p className="rate-currency">
           { toCurrency(rate) }
-        </span>
-      </p>
+        </p>
+      </div>
     </div>
   );
 };
