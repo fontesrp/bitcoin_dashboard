@@ -1,0 +1,24 @@
+.Rates {
+  margin: 20px 0px;
+  font-size: 16px;
+}
+
+.rate-currency {
+  margin-left: 20px;
+}
+
+.RatesRow {
+  display: flex;
+}
+
+.rate-symbol-container {
+  flex-grow: 1;
+  text-align: right;
+  width: 50%;
+}
+
+.rate-currency-container {
+  flex-grow: 1;
+  text-align: left;
+  width: 50%;
+}

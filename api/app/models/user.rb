@@ -14,4 +14,13 @@ class User < ApplicationRecord
   def full_name
     "#{first_name} #{last_name}".strip.titleize
   end
+
+  def rates_watched
+
+    exc = currencies&.map { |curr| curr.buying_rates.map(&:shown_props) }
+
+    exc&.concat(currencies&.map { |curr| curr.selling_rates.map(&:shown_props) })
+
+    exc&.flatten
+  end
 end

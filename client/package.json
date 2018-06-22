@@ -1,14 +1,24 @@
 {
-  "name": "Bitcoin Dashboard",
+  "name": "bitcoin_dashboard",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "action-cable-react-jwt": "^0.0.5",
+    "actioncable": "^5.2.0",
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1",
+    "jwt-decode": "^2.2.0",
+    "popper.js": "^1.14.3",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-scripts": "1.1.4"
+    "react-redux": "^5.0.7",
+    "react-scripts": "1.1.4",
+    "redux": "^4.0.0",
+    "redux-logger": "^3.0.6",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=8000 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
